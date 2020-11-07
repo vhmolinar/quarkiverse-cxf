@@ -9,13 +9,12 @@ import org.apache.cxf.transport.http.DestinationRegistry;
 import org.apache.cxf.transport.http.HTTPTransportFactory;
 import org.apache.cxf.transport.http.HttpDestinationFactory;
 
-public class UndertowDestinationFactory extends HTTPTransportFactory implements HttpDestinationFactory {
+public class VertxDestinationFactory extends HTTPTransportFactory implements HttpDestinationFactory {
 
     @Override
     public AbstractHTTPDestination createDestination(EndpointInfo endpointInfo, Bus bus,
             DestinationRegistry destinationRegistry) throws IOException {
-        return new UndertowDestination(endpointInfo, bus, destinationRegistry);
+        return new VertxDestination(endpointInfo, bus, destinationRegistry);
 
     }
-
 }

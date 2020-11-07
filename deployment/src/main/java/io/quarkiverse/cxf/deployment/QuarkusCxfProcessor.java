@@ -328,15 +328,52 @@ class QuarkusCxfProcessor {
     private static final String WRAPPER_HELPER_POSTFIX = "_WrapperTypeHelper";
     private static final String WRAPPER_FACTORY_POSTFIX = "Factory";
 
+    //inspired from https://github.com/forge/roaster/blob/master/api/src/main/java/org/jboss/forge/roaster/model/util/Types.java#L599-L644?
+    private String fixMethodDescriptorName (String methodDescType) {
+        String result = methodDescType;
+        if (methodDescType != null && methodDescType.length() == 1) {
+            switch (methodDescType) {
+                case "B":
+                    result = "byte";
+                    break;
+                case "F":
+                    result = "float";
+                    break;
+                case "C":
+                    result = "char";
+                    break;
+                case "D":
+                    result = "double";
+                    break;
+                case "I":
+                    result = "int";
+                    break;
+                case "J":
+                    result = "long";
+                    break;
+                case "S":
+                    result = "short";
+                    break;
+                case "Z":
+                    result = "boolean";
+                    break;
+                default:
+                    break;
+            }
+        }
+        return result;
+    }
     private String computeSignature(List<MethodDescriptor> getters, List<MethodDescriptor> setters) {
         StringBuilder b = new StringBuilder();
         b.append(setters.size()).append(':');
         for (int x = 0; x < setters.size(); x++) {
-            if (getters.get(x) == null) {
+            MethodDescriptor getMethodDesc = getters.get(x);
+            if (getMethodDesc == null) {
                 b.append("null,");
             } else {
-                b.append(getters.get(x).getName()).append('/');
-                b.append(getters.get(x).getReturnType()).append(',');
+                //convert MethodDescriptor.getReturnType() format to Method.getReturnType().getName() format
+                b.append(fixMethodDescriptorName(getMethodDesc.getName())).append('/');
+                b.append(fixMethodDescriptorName(getMethodDesc.getReturnType())).append(',');
             }
         }
         return b.toString();

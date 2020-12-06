@@ -8,10 +8,13 @@ import javax.servlet.ServletException;
 
 import org.jboss.logging.Logger;
 
+import io.quarkiverse.cxf.transport.CxfHandler;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.core.ManagedServlet;
+import io.vertx.core.Handler;
+import io.vertx.ext.web.RoutingContext;
 
 @Recorder
 public class CXFRecorder {
@@ -130,5 +133,9 @@ public class CXFRecorder {
             }
         } catch (ServletException e) {
         }
+    }
+
+    public Handler<RoutingContext> initServer(RuntimeValue<CXFServletInfos> infos) {
+        return new CxfHandler(infos.getValue());
     }
 }

@@ -9,6 +9,11 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 @ConfigRoot(name = CxfConfig.CONFIG_NAME, phase = ConfigPhase.RUN_TIME)
 public class CxfConfig {
     public static final String CONFIG_NAME = "cxf";
+    /**
+     * Set this to override the default path for CXF resources
+     */
+    @ConfigItem(defaultValue = "/")
+    public String path;
 
     /**
      * Choose the path of each web services.
